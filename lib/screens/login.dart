@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../util/сolors.dart';
+import 'main_screen.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -9,7 +11,6 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-
   bool _isObscured = true;
 
   @override
@@ -17,7 +18,6 @@ class _LoginState extends State<Login> {
     super.initState();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
   }
-
   void toggleVisibility() {
     setState(() {
       _isObscured = !_isObscured; // Переключаем состояние
@@ -28,23 +28,20 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        width: MediaQuery
-            .of(context)
-            .size
-            .width,
-        height: MediaQuery
-            .of(context)
-            .size
-            .height,
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
         decoration: const BoxDecoration(
           image: DecorationImage(
-              image: AssetImage('assets/images/bg.png'), fit: BoxFit.fill),
+            alignment: Alignment.topRight,
+            fit: BoxFit.fill,
+            image: AssetImage('assets/images/bg.png'),
+          ),
         ),
         child: Center(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(height: 69),
+              const SizedBox(height: 50),
               const Text(
                 'Log in',
                 style: TextStyle(
@@ -85,7 +82,55 @@ class _LoginState extends State<Login> {
                     ),
                   ),
                   _inputPassword(),
+                  const SizedBox(height: 15),
+                  const Text(
+                    'Forgot password?',
+                    style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.green),
+                  ),
                 ],
+              ),
+              const SizedBox(height: 30),
+              ElevatedButton(
+                onPressed: () {},
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.yellow),
+                  padding: MaterialStateProperty.all(const EdgeInsets.only(top: 16, left: 135, bottom: 16, right: 135)),
+                  minimumSize:
+                      MaterialStateProperty.all<Size>(const Size(329, 59)),
+                  shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(66.0)
+                  )),
+                  elevation: MaterialStateProperty.all(12),
+                  shadowColor: MaterialStateProperty.all(shadowButtonColor)
+                ),
+                child: const Text(
+                  'Login',
+                  style: TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              InkWell(
+                onTap: () {
+                  Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const MainScreen()), (route) => false);
+                },
+                child: const Text(
+                  'Skip now',
+                  style: TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black,
+                  ),
+                ),
               ),
             ],
           ),
@@ -144,30 +189,32 @@ class _LoginState extends State<Login> {
             ),
           ],
         ),
-        child:  TextField(
-            decoration: InputDecoration(
-              iconColor: Colors.black,
-              contentPadding: const EdgeInsets.symmetric(
-                  vertical: 15, horizontal: 20), // Задаем внутренние отступы
-              border: OutlineInputBorder(
-                borderSide: const BorderSide(width: 0, style: BorderStyle.none),
-                borderRadius: BorderRadius.circular(28.0),
-              ),
-              suffixIcon: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: GestureDetector(
-                  onTap: toggleVisibility,
-                  child: Icon(_isObscured ? Icons.visibility : Icons.visibility_off),
-                ),
-              ),
-              suffixIconConstraints: const BoxConstraints(
-                minHeight: 24, // Минимальная высота для центрирования
-                minWidth: 24, // Минимальная ширина для центрирования
+        child: TextField(
+          decoration: InputDecoration(
+            iconColor: Colors.black,
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+            // Задаем внутренние отступы
+            border: OutlineInputBorder(
+              borderSide: const BorderSide(width: 0, style: BorderStyle.none),
+              borderRadius: BorderRadius.circular(28.0),
+            ),
+            suffixIcon: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: GestureDetector(
+                onTap: toggleVisibility,
+                child:
+                    Icon(_isObscured ? Icons.visibility : Icons.visibility_off),
               ),
             ),
-            obscureText: _isObscured, // Используем состояние для скрытия текста
+            suffixIconConstraints: const BoxConstraints(
+              minHeight: 24, // Минимальная высота для центрирования
+              minWidth: 24, // Минимальная ширина для центрирования
+            ),
           ),
+          obscureText: _isObscured, // Используем состояние для скрытия текста
         ),
+      ),
     );
   }
 }
